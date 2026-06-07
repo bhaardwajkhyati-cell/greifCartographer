@@ -1,6 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import {useEffect} from "react"
+import {useRouter} from "next/navigation"
 
 const title = "Grief Cartographer"
 
@@ -18,7 +20,18 @@ const containerVariants = {
   },
 }
 
+
+
 export default function Home() {
+const router = useRouter()
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      router.push('/theme')
+    }, 6000)
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <main className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center relative overflow-hidden">
 
