@@ -72,7 +72,7 @@ export default function Theme() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1.5, delay: index * 0.3 }}
-              className="flex flex-col items-center gap-4 border border-gray-600 rounded-lg p-10 w-48 cursor-pointer hover:border-gray-600 transition-colors"
+              className="flex flex-col items-center gap-4 border border-gray-600 rounded-lg p-10 w-48 cursor-pointer transition-all duration-500 hover:border-gray-300 hover:bg-[#1a1a1a] hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
             >
               <span className="text-gray-400 text-3xl">{theme.icon}</span>
               <p className="text-white text-lg tracking-widest font-light">{theme.name}</p>
