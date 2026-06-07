@@ -24,3 +24,27 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+@keyframes shoot {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(200px, 200px);
+    opacity: 0;
+  }
+}
+
+.shooting-star {
+  position: absolute;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, white);
+  opacity: 0;
+  transform: rotate(45deg);
+  animation: shoot 3s linear infinite;
+}
+

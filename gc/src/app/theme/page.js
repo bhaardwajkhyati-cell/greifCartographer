@@ -26,10 +26,31 @@ const themes = [
 export default function Theme() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center relative overflow-hidden px-8">
-
+          {/* Shooting stars */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+         {[
+           { top: '10%', left: '20%', duration: '3s', delay: '0s' },
+           { top: '25%', left: '50%', duration: '4.5s', delay: '2s' },
+           { top: '15%', left: '70%', duration: '3.5s', delay: '4s' },
+            { top: '40%', left: '10%', duration: '5s', delay: '1s' },
+           { top: '5%', left: '40%', duration: '4s', delay: '3s' },
+            { top: '50%', left: '80%', duration: '3s', delay: '5s' },
+         ].map((star, i) => (
+            <div
+              key={i}
+              className="shooting-star"
+              style={{
+               top: star.top,
+                left: star.left,
+               animationDuration: star.duration,
+                animationDelay: star.delay,
+              }}
+            />
+          ))}
+        </div>
       {/* Fog glow */}
       <div className="absolute w-[700px] h-[400px] rounded-full bg-[#ffffff] opacity-[0.04] blur-[100px] z-0" />
-
+    
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center">
 
