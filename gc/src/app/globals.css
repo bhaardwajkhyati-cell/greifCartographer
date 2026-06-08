@@ -40,11 +40,10 @@ body {
 
 .shooting-star {
   position: absolute;
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(to right, transparent, white);
+  width: 4px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgb(255, 255, 255));
   opacity: 0;
   transform: rotate(45deg);
   animation: shoot 3s linear infinite;
 }
-
