@@ -1,67 +1,103 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import FogGlow from '../components/Botanical'
 import StarParticles from '../components/StarParticles'
 import Botanical from '../components/Botanical'
 
-const themes = [
+const phases = [
   {
-    id: 'object',
-    name: 'Object',
-    description: 'Symbols that remain.',
-    icon: '○'
+    id: 'fog',
+    name: 'Fog',
+    description: 'Nothing feels clear. Even ordinary things seem unfamiliar.',
+    icon: '◌',
   },
   {
-    id: 'room',
-    name: 'Room',
-    description: 'Spaces that hold.',
-    icon: '⌂'
+    id: 'isolation',
+    name: 'Isolation',
+    description: 'Some grief is carried quietly, where no one else can reach.',
+    icon: '□',
   },
   {
-    id: 'path',
-    name: 'Path',
-    description: 'Journeys that linger.',
-    icon: '↝'
+    id: 'immersion',
+    name: 'Immersion',
+    description: 'Memories return again and again, asking to be felt.',
+    icon: '≈',
+  },
+  {
+    id: 'exploration',
+    name: 'Exploration',
+    description: 'Questions appear where answers once seemed certain.',
+    icon: '◇',
+  },
+  {
+    id: 'growth',
+    name: 'Growth',
+    description: 'Grief remains, but it has begun to change its shape.',
+    icon: '✦',
   },
 ]
 
 export default function Theme() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center relative overflow-hidden px-8">
-          {/* Shooting stars */}
-        <StarParticles/>
-      {/* Fog glow */}
-      <div className="absolute w-[700px] h-[400px] rounded-full bg-[#ffffff] opacity-[0.04] blur-[100px] z-0" />
-    
-      {/* Content */}
-      <div className="relative z-10 flex flex-col items-center">
 
-        {/* Top line */}
+      {/* Floating particles */}
+      <StarParticles />
+
+      {/* Background glow */}
+      <div className="absolute w-[700px] h-[400px] rounded-full bg-white opacity-[0.04] blur-[100px] z-0" />
+
+      <div className="relative z-10 flex flex-col items-center max-w-7xl">
+
+        {/* Heading */}
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          className="text-white text-4xl font-light tracking-wide mb-4 text-center"
+        >
+          Where does your grief wish to begin?
+        </motion.h1>
+
+        {/* Subheading */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 2 }}
-          className="text-gray-500 text-sm tracking-widest mb-16"
+          transition={{ duration: 2, delay: 0.3 }}
+          className="text-gray-400 text-center max-w-2xl leading-7 mb-16"
         >
-          Some losses become rooms. Some become objects. Some become journeys.
+          Reflection begins in different places. Choose the space that feels
+          closest to you today. There is no correct place to begin.
         </motion.p>
 
-        {/* Three theme cards */}
-        <div className="flex gap-8">
-          {themes.map((theme, index) => (
+        {/* Phase cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+
+          {phases.map((phase, index) => (
             <motion.div
-              key={theme.id}
+              key={phase.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.5, delay: index * 0.3 }}
-              className="flex flex-col items-center gap-4 border border-gray-600 rounded-lg p-10 w-48 cursor-pointer transition-all duration-500 hover:border-gray-300 hover:bg-[#1a1a1a] hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+              transition={{
+                duration: 1,
+                delay: index * 0.2,
+              }}
+              className="border border-gray-700 rounded-xl p-8 w-64 flex flex-col items-center text-center cursor-pointer transition-all duration-500 hover:border-gray-300 hover:bg-[#161616] hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
             >
-              <span className="text-gray-400 text-3xl">{theme.icon}</span>
-              <p className="text-white text-lg tracking-widest font-light">{theme.name}</p>
-              <p className="text-gray-400 text-sm text-center">{theme.description}</p>
+              <span className="text-5xl text-gray-300 mb-6">
+                {phase.icon}
+              </span>
+
+              <h2 className="text-white text-xl tracking-wide mb-4">
+                {phase.name}
+              </h2>
+
+              <p className="text-gray-400 text-sm leading-6">
+                {phase.description}
+              </p>
             </motion.div>
           ))}
+
         </div>
 
         {/* Bottom line */}
@@ -69,16 +105,14 @@ export default function Theme() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 2, delay: 1.5 }}
-          className="text-gray-400 text-sm tracking-widest mt-16 font-[family-name:var(--font-dancing)] text-xl"
+          className="mt-16 text-gray-400 text-xl font-[family-name:var(--font-dancing)]"
         >
-          Choose how your grief wishes to appear.
+          Begin where your heart finds itself today.
         </motion.p>
-        {/* Botanical divider */}
-        <Botanical/>
-    
+
+        <Botanical />
 
       </div>
-
     </main>
   )
 }
