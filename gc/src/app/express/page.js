@@ -32,12 +32,7 @@ export default function Express() {
       {/* Canvas Placeholder */}
       <DrawingCanvas  />
 
-      {/* Toolbar */}
-      <div className="flex gap-6 mt-6 text-gray-400">
-        <button>✏ Pencil</button>
-        <button>⌫ Eraser</button>
-        <button>🗑 Clear</button>
-      </div>
+      
 
       {/* Continue */}
       <button

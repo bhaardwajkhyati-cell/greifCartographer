@@ -47,3 +47,8 @@ body {
   transform: rotate(45deg);
   animation: shoot 3s linear infinite;
 }
+
+.canvas-border {
+  box-shadow: 0 0 0 2px rgba(165, 156, 156, 0.2),
+              0 0 30px rgba(245, 242, 242, 0.1);
+}

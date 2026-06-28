@@ -72,7 +72,7 @@ export default function Theme() {
         </motion.p>
 
         {/* Phase cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
 
           {phases.map((phase, index) => (
             <motion.div
