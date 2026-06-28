@@ -40,8 +40,8 @@ body {
 
 .shooting-star {
   position: absolute;
-  width: 4px;
-  height: 2px;
+  width: 5px;
+  height: 3px;
   background: linear-gradient(to right, transparent, rgb(255, 255, 255));
   opacity: 0;
   transform: rotate(45deg);
