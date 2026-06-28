@@ -1,5 +1,5 @@
 'use client'
-
+import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion'
 import StarParticles from '../components/StarParticles'
 import Botanical from '../components/Botanical'
@@ -38,6 +38,7 @@ const phases = [
 ]
 
 export default function Theme() {
+  const router = useRouter();
   return (
     <main className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center relative overflow-hidden px-8">
 
@@ -82,6 +83,7 @@ export default function Theme() {
                 duration: 1,
                 delay: index * 0.2,
               }}
+              onClick = {() => router.push(`/express?phase=${phase.id}`)}
               className="border border-gray-700 rounded-xl p-8 w-64 flex flex-col items-center text-center cursor-pointer transition-all duration-500 hover:border-gray-300 hover:bg-[#161616] hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
             >
               <span className="text-5xl text-gray-300 mb-6">
