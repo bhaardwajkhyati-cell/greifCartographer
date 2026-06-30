@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 const colors = [
   '#FFFFFF',
@@ -20,38 +20,50 @@ export default function DrawingCanvas() {
 
   const [drawing, setDrawing] = useState(false);
   const [color, setColor] = useState('#FFFFFF');
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [tool, setTool] = useState('pencil');
+
+  const [mousePosition, setMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
+
   const [isHoveringCanvas, setIsHoveringCanvas] = useState(false);
-  const [tool, setTool] = useState("pencil");
 
   useEffect(() => {
     const canvas = canvasRef.current;
+
     canvas.width = 1000;
     canvas.height = 600;
+
     const ctx = canvas.getContext('2d');
+
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.lineWidth = 3;
     ctx.strokeStyle = color;
-    ctxRef.current = ctx;
+
     ctx.fillStyle = '#111111';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctxRef.current = ctx;
   }, []);
 
   useEffect(() => {
     if (!ctxRef.current) return;
-    if (tool === "pencil") {
+
+    if (tool === 'pencil') {
       ctxRef.current.strokeStyle = color;
       ctxRef.current.lineWidth = 3;
     } else {
-      ctxRef.current.strokeStyle = "#111111";
+      ctxRef.current.strokeStyle = '#111111';
       ctxRef.current.lineWidth = 18;
     }
-  }, [color, tool]);
+  }, [tool, color]);
 
-  const getMousePosition = (e) => {
+  const getPointerPosition = (e) => {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
+
     return {
       x: (e.clientX - rect.left) * (canvas.width / rect.width),
       y: (e.clientY - rect.top) * (canvas.height / rect.height),
@@ -59,52 +71,101 @@ export default function DrawingCanvas() {
   };
 
   const startDrawing = (e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
-    const { x, y } = getMousePosition(e);
+    e.preventDefault();
+
+    canvasRef.current.setPointerCapture(e.pointerId);
+
+    const { x, y } = getPointerPosition(e);
+
+    setMousePosition({
+      x: e.clientX,
+      y: e.clientY,
+    });
+
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(x, y);
-    ctxRef.current.strokeStyle = tool === "eraser" ? "#111111" : color;
-    ctxRef.current.lineWidth = tool === "eraser" ? 18 : 3;
+
+    if (tool === 'eraser') {
+      ctxRef.current.strokeStyle = '#111111';
+      ctxRef.current.lineWidth = 18;
+    } else {
+      ctxRef.current.strokeStyle = color;
+      ctxRef.current.lineWidth = 3;
+    }
+
     setDrawing(true);
   };
 
   const draw = (e) => {
-    setMousePosition({ x: e.clientX, y: e.clientY });
+    e.preventDefault();
+
+    setMousePosition({
+      x: e.clientX,
+      y: e.clientY,
+    });
+
     if (!drawing) return;
-    const { x, y } = getMousePosition(e);
+
+    const { x, y } = getPointerPosition(e);
+
     ctxRef.current.lineTo(x, y);
     ctxRef.current.stroke();
   };
 
-  const stopDrawing = () => {
+  const stopDrawing = (e) => {
+    if (!drawing) return;
+
+    canvasRef.current.releasePointerCapture(e.pointerId);
+
     ctxRef.current.closePath();
     setDrawing(false);
   };
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
+
     ctxRef.current.fillStyle = '#111111';
     ctxRef.current.fillRect(0, 0, canvas.width, canvas.height);
+  };
+
+  const handlePointerEnter = (e) => {
+    if (e.pointerType === 'mouse') {
+      setIsHoveringCanvas(true);
+    }
+  };
+
+  const handlePointerLeave = () => {
+    setIsHoveringCanvas(false);
   };
 
   return (
     <div className="flex flex-col items-center gap-6">
 
       <canvas
-  ref={canvasRef}
-  onMouseDown={startDrawing}
-  onMouseMove={draw}
-  onMouseUp={stopDrawing}
-  onMouseLeave={() => { stopDrawing(); setIsHoveringCanvas(false); }}
-  onMouseEnter={() => setIsHoveringCanvas(true)}
-  className={`rounded-xl w-full bg-[#111111] block canvas-border ${
-    isHoveringCanvas ? "cursor-none" : "cursor-default"
-  }`}
-/>
+        ref={canvasRef}
+        onPointerDown={startDrawing}
+        onPointerMove={draw}
+        onPointerUp={stopDrawing}
+        onPointerCancel={stopDrawing}
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+        className={`border border-gray-700 rounded-xl w-full max-w-5xl bg-[#111111] ${
+          isHoveringCanvas ? 'cursor-none' : 'cursor-default'
+        }`}
+        style={{ touchAction: 'none' }}
+      />
 
       {isHoveringCanvas && (
         <motion.div
-          style={{ left: mousePosition.x, top: mousePosition.y }}
+          animate={{
+            x: mousePosition.x,
+            y: mousePosition.y,
+          }}
+          transition={{
+            type: 'spring',
+            stiffness: 600,
+            damping: 35,
+          }}
           className="fixed pointer-events-none w-3 h-3 rounded-full bg-white -translate-x-1/2 -translate-y-1/2 z-[999] shadow-[0_0_10px_rgba(255,255,255,0.9),0_0_20px_rgba(255,255,255,0.45)]"
         />
       )}
@@ -141,18 +202,24 @@ export default function DrawingCanvas() {
         </button>
 
       </div>
-       <div className="flex gap-3">
-          {colors.map((c) => (
-            <button
-              key={c}
-              onClick={() => { setColor(c); setTool('pencil'); }}
-              className={`w-8 h-8 rounded-full border-2 ${
-                color === c && tool === 'pencil' ? 'border-white' : 'border-gray-600'
-              }`}
-              style={{ backgroundColor: c }}
-            />
-          ))}
-        </div>
+
+      <div className="flex gap-3">
+        {colors.map((c) => (
+          <button
+            key={c}
+            onClick={() => {
+              setColor(c);
+              setTool('pencil');
+            }}
+            className={`w-8 h-8 rounded-full border-2 transition ${
+              color === c && tool === 'pencil'
+                ? 'border-white scale-110'
+                : 'border-gray-600'
+            }`}
+            style={{ backgroundColor: c }}
+          />
+        ))}
+      </div>
 
     </div>
   );
